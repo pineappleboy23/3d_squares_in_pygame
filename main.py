@@ -61,6 +61,7 @@ class Square(object):
         self.up = False
         self.do = False
         self.shrink = False
+        self.grow = False
 
         self.speed = 3
 
@@ -103,15 +104,19 @@ class Square(object):
 
     def move(self):
         if self.ri:
-             self.x += self.speed * self.scale
+            self.x += self.speed * self.scale
         if self.le:
             self.x -= self.speed * self.scale
         if self.up:
             self.y -= self.speed * self.scale
         if self.do:
-              self.y += self.speed * self.scale
+            self.y += self.speed * self.scale
         if self.shrink:
-              self.z += self.speed * self.scale
+            self.z += self.speed * self.scale
+        if self.grow and self.z > 0:
+            self.z -= self.speed * self.scale
+            if self.z < 0:
+                self.z = 0
 
 
     def draw(self, win):
@@ -179,6 +184,11 @@ while running:
                 for i in all_my_squares:
                     i.shrink = True
 
+            if event.key == ord('n'):
+                square.grow = True
+                for i in all_my_squares:
+                    i.grow = True
+
 
         if event.type == pg.KEYUP:
             if event.key == pg.K_LEFT or event.key == ord('a'):
@@ -202,6 +212,11 @@ while running:
                 square.shrink = False
                 for i in all_my_squares:
                     i.shrink = False
+
+            if event.key == ord('n'):
+                square.grow = False
+                for i in all_my_squares:
+                    i.grow = False
 
 
     square.move()
